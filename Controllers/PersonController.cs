@@ -6,26 +6,23 @@ using System.Net;
 
 namespace StargateAPI.Controllers
 {
-   
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PersonController : ControllerBase
     {
         private readonly IMediator _mediator;
+
         public PersonController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet("/People")]
+        [HttpGet("People")]
         public async Task<IActionResult> GetPeople()
         {
             try
             {
-                var result = await _mediator.Send(new GetPeople()
-                {
-
-                });
+                var result = await _mediator.Send(new GetPeople());
 
                 return this.GetResponse(result);
             }
