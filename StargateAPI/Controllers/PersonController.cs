@@ -17,7 +17,7 @@ namespace StargateAPI.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("People")]
+        [HttpGet("people")]
         public async Task<IActionResult> GetPeople()
         {
             try
@@ -73,7 +73,7 @@ namespace StargateAPI.Controllers
                 return this.GetResponse(result);
             }
             catch (Exception ex)
-            {
+            {                                                 
                 return this.GetResponse(new BaseResponse()
                 {
                     Message = ex.Message,
