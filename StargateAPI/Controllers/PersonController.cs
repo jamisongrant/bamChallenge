@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StargateAPI.Business.Commands;
+using StargateAPI.Business.Data;
 using StargateAPI.Business.Queries;
+using StargateAPI.Business.Services;
 using System.Net;
 
 namespace StargateAPI.Controllers
@@ -11,10 +13,12 @@ namespace StargateAPI.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IPersonService _personService;
 
-        public PersonController(IMediator mediator)
+        public PersonController(IMediator mediator, IPersonService personService)
         {
             _mediator = mediator;
+            _personService = personService;
         }
 
         [HttpGet("people")]
@@ -101,6 +105,20 @@ namespace StargateAPI.Controllers
                     Success = false,
                     ResponseCode = (int)HttpStatusCode.InternalServerError
                 });
+            }
+        }
+
+        [HttpPost("add-astronaut-detail")]
+        public async Task<IActionResult> AddAstronautDetail(int personId, [FromBody] AstronautDetail detail)
+        {
+            try
+            {
+                await _personService.AddAstronautDetail(personId, detail);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
         }
     }
